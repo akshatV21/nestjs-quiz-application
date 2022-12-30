@@ -18,7 +18,7 @@ export class User {
   @Prop({ default: false })
   emailValidated: boolean
 
-  _doc: unknown
+  _doc: any
 }
 
 const UserSchema = SchemaFactory.createForClass(User)
