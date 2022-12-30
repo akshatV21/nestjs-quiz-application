@@ -2,10 +2,10 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { hashSync } from 'bcrypt'
 import { Document } from 'mongoose'
 
-export type UserDocument = UserSchema & Document
+export type UserDocument = User & Document
 
 @Schema({ timestamps: true })
-export class UserSchema {
+export class User {
   @Prop({ required: true })
   username: string
 
@@ -15,12 +15,15 @@ export class UserSchema {
   @Prop({ required: true })
   password: string
 
+  @Prop({ default: false })
+  emailValidated: boolean
+
   _doc: unknown
 }
 
-const UserModel = SchemaFactory.createForClass(UserSchema)
+const UserSchema = SchemaFactory.createForClass(User)
 
-UserModel.pre('save', function (next) {
+UserSchema.pre('save', function (next) {
   if (!this.isModified('password')) return next()
 
   const hashedPassword = hashSync(this.password, 4)
@@ -28,4 +31,4 @@ UserModel.pre('save', function (next) {
   return next()
 })
 
-export { UserModel }
+export { UserSchema }

@@ -1,7 +1,25 @@
-import { Controller } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { Controller, Post, UsePipes, ValidationPipe } from '@nestjs/common'
+import { HttpSuccessResponse } from 'src/utils/types'
+import { IAuthController } from './auth.interface'
+import { AuthService } from './auth.service'
+import { LoginUserDto } from './dtos/loginUser.dto'
+import { RegisterUserDto } from './dtos/registerUser.dto'
 
 @Controller('auth')
-export class AuthController {
+export class AuthController implements IAuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @Post('register')
+  @UsePipes(new ValidationPipe())
+  async httpRegisterUser(registerUserDto: RegisterUserDto): Promise<HttpSuccessResponse> {
+    const user = await this.authService.register(registerUserDto)
+    return { success: true, message: 'User registered successfully', data: { user } }
+  }
+
+  @Post('login')
+  @UsePipes(new ValidationPipe())
+  async httpLoginUser(loginUserDto: LoginUserDto): Promise<HttpSuccessResponse> {
+    const user = await this.authService.login(loginUserDto)
+    return { success: true, message: 'User logged in successfully', data: { user } }
+  }
 }
