@@ -35,4 +35,9 @@ export class AuthService {
 
     return { ...rest, token }
   }
+
+  async getUserByEmail(email: string) {
+    const user = await this.UserModel.findOne({ email: email })
+    return user
+  }
 }
