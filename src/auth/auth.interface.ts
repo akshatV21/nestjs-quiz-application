@@ -5,5 +5,5 @@ import { RegisterUserDto } from './dtos/registerUser.dto'
 export interface IAuthController {
   httpRegisterUser(registerUserDto: RegisterUserDto): Promise<HttpSuccessResponse>
   httpLoginUser(loginUserDto: LoginUserDto): Promise<HttpSuccessResponse>
-  // httpValidateEmail(): Promise<HttpSuccessResponse>
+  httpValidateEmail(token: string): Promise<HttpSuccessResponse>
 }

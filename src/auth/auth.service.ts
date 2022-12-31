@@ -4,6 +4,7 @@ import { compareSync } from 'bcrypt'
 import { sign } from 'jsonwebtoken'
 import { Model } from 'mongoose'
 import { MailerService } from 'src/mailer/mailer.service'
+import { EmailValidation, EmailValidationDocument } from 'src/models/emailValidation.model'
 import { User, UserDocument } from 'src/models/user.model'
 import { LoginUserDto } from './dtos/loginUser.dto'
 import { RegisterUserDto } from './dtos/registerUser.dto'
@@ -12,13 +13,19 @@ import { RegisterUserDto } from './dtos/registerUser.dto'
 export class AuthService {
   constructor(
     @InjectModel(User.name) private readonly UserModel: Model<UserDocument>,
+    @InjectModel(EmailValidation.name) private readonly EmailValidationModel: Model<EmailValidationDocument>,
     private readonly mailerService: MailerService,
   ) {}
 
   async register(registerUserDto: RegisterUserDto) {
     const user = new this.UserModel(registerUserDto)
+
     const validationToken = sign(user.email, user.id)
-    await Promise.all([user.save(), this.mailerService.sendEmailVerificationMail(user.email, validationToken)])
+    const emailValidationDocument = new this.EmailValidationModel({ user: user._id, token: validationToken })
+
+    await Promise.all([user.save(), emailValidationDocument.save()])
+    this.mailerService.sendEmailVerificationMail(user.email, validationToken)
+
     const { password, ...rest } = user._doc
     return rest
   }
@@ -34,6 +41,14 @@ export class AuthService {
     const { password, ...rest } = registeredUser._doc
 
     return { ...rest, token }
+  }
+
+  async validateEmail(token: string) {
+    const emailValidationDocument = await this.EmailValidationModel.findOne({ token: token })
+    if (!emailValidationDocument)
+      throw new BadRequestException('InvalidValidationToken', 'Token is either expired or invalid.')
+
+    return true
   }
 
   async getUserByEmail(email: string) {
