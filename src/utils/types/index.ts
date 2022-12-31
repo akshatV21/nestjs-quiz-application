@@ -3,3 +3,9 @@ export type HttpSuccessResponse = {
   message: string
   data?: unknown
 }
+
+export type AuthOptions = {
+  isOpen?: boolean
+  user?: boolean
+  roles?: string[]
+}
