@@ -12,4 +12,7 @@ export class EmailValidation {
   token: string
 }
 
-export const EmailValidationSchema = SchemaFactory.createForClass(EmailValidation)
+const EmailValidationSchema = SchemaFactory.createForClass(EmailValidation)
+EmailValidationSchema.index({ createdAt: 1 }, { expireAfterSeconds: 30 })
+
+export { EmailValidationSchema }

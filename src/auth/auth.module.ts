@@ -4,6 +4,7 @@ import { AuthController } from './auth.controller'
 import { MongooseModule } from '@nestjs/mongoose'
 import { User, UserSchema } from 'src/models/user.model'
 import { EmailValidation, EmailValidationSchema } from 'src/models/emailValidation.model'
+import { MailerService } from 'src/mailer/mailer.service'
 
 @Module({
   imports: [
@@ -13,6 +14,6 @@ import { EmailValidation, EmailValidationSchema } from 'src/models/emailValidati
     ]),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, MailerService],
 })
 export class AuthModule {}
