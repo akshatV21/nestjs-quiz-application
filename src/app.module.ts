@@ -6,7 +6,7 @@ import { MailerModule } from './mailer/mailer.module'
 @Module({
   imports: [
     MongooseModule.forRoot(
-      'mongodb+srv://akshat21:aku1985pika@cluster0.ew0oz.mongodb.net/?retryWrites=true&w=majority',
+      'mongodb+srv://akshat21:aku1985pika@cluster0.ew0oz.mongodb.net/quiz_app?retryWrites=true&w=majority',
     ),
     AuthModule,
     MailerModule,

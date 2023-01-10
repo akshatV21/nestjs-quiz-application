@@ -48,6 +48,10 @@ export class AuthService {
     if (!emailValidationDocument)
       throw new BadRequestException('InvalidValidationToken', 'Token is either expired or invalid.')
 
+    const user = await this.UserModel.findById(emailValidationDocument.user)
+    user.emailValidated = true
+
+    await Promise.all([user.save(), emailValidationDocument.delete()])
     return true
   }
 

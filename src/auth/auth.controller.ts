@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common'
+import { Body, Controller, Get, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common'
 import { HttpSuccessResponse } from 'src/utils/types'
 import { IAuthController } from './auth.interface'
 import { AuthService } from './auth.service'
@@ -11,14 +11,14 @@ export class AuthController implements IAuthController {
 
   @Post('register')
   @UsePipes(new ValidationPipe())
-  async httpRegisterUser(registerUserDto: RegisterUserDto): Promise<HttpSuccessResponse> {
+  async httpRegisterUser(@Body() registerUserDto: RegisterUserDto): Promise<HttpSuccessResponse> {
     const user = await this.authService.register(registerUserDto)
     return { success: true, message: 'User registered successfully', data: { user } }
   }
 
   @Post('login')
   @UsePipes(new ValidationPipe())
-  async httpLoginUser(loginUserDto: LoginUserDto): Promise<HttpSuccessResponse> {
+  async httpLoginUser(@Body()  loginUserDto: LoginUserDto): Promise<HttpSuccessResponse> {
     const user = await this.authService.login(loginUserDto)
     return { success: true, message: 'User logged in successfully', data: { user } }
   }

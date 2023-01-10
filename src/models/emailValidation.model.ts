@@ -13,6 +13,6 @@ export class EmailValidation {
 }
 
 const EmailValidationSchema = SchemaFactory.createForClass(EmailValidation)
-EmailValidationSchema.index({ createdAt: 1 }, { expireAfterSeconds: 30 })
+EmailValidationSchema.index({ createdAt: 1 }, { expireAfterSeconds: 86400 })
 
 export { EmailValidationSchema }

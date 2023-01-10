@@ -9,7 +9,7 @@ import { MailerModule as MailModule } from '@nestjs-modules/mailer'
         service: 'gmail',
         auth: {
           user: 'a.vishwakarma1021@gmail.com',
-          pass: 'sdnjzvyjgimyvxst',
+          pass: 'plolhahkrrlcpwsw',
         },
       },
       defaults: {
