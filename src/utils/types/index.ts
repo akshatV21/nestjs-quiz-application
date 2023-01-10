@@ -1,3 +1,5 @@
+import { ROLES } from '../constants'
+
 export type HttpSuccessResponse = {
   success: boolean
   message: string
@@ -7,5 +9,7 @@ export type HttpSuccessResponse = {
 export type AuthOptions = {
   isOpen?: boolean
   user?: boolean
-  roles?: string[]
+  role?: Role
 }
+
+export type Role = typeof ROLES[number]

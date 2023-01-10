@@ -59,4 +59,10 @@ export class AuthService {
     const user = await this.UserModel.findOne({ email: email })
     return user
   }
+
+  async getUserById(id: string) {
+    const user = await this.UserModel.findById(id)
+    if (!user) throw new BadRequestException('Cannot find user', 'UserNotFound')
+    return user
+  }
 }

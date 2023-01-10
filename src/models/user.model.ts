@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { hashSync } from 'bcrypt'
 import { Document } from 'mongoose'
+import { ROLES } from 'src/utils/constants'
+import { Role } from 'src/utils/types'
 
 export type UserDocument = User & Document
 
@@ -17,6 +19,9 @@ export class User {
 
   @Prop({ default: false })
   emailValidated: boolean
+
+  @Prop({ default: ROLES[0] })
+  role: Role
 
   _doc: any
 }
