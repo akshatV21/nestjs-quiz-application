@@ -3,6 +3,7 @@ import { hashSync } from 'bcrypt'
 import { Document } from 'mongoose'
 import { ROLES } from 'src/utils/constants'
 import { Role } from 'src/utils/types'
+import { Quiz } from './quiz.model'
 
 export type UserDocument = User & Document
 
@@ -22,6 +23,9 @@ export class User {
 
   @Prop({ default: ROLES[0] })
   role: Role
+
+  @Prop({ default: [], ref: 'Quiz' })
+  quizzes: Quiz[]
 
   _doc: any
 }

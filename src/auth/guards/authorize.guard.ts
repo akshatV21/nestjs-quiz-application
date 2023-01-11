@@ -1,4 +1,11 @@
-import { BadRequestException, CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common'
+import {
+  BadRequestException,
+  CanActivate,
+  ExecutionContext,
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { Request } from 'express'
 import { verify } from 'jsonwebtoken'
@@ -24,9 +31,12 @@ export class Authorize implements CanActivate {
     const registeredUser = await this.authService.getUserById(id)
 
     if (!registeredUser.emailValidated) throw new BadRequestException('Please validate your email', 'EmailNotValidated')
+    request.user = registeredUser
 
     if (role === ROLES[0]) return true
-    if (role === ROLES[1] && registeredUser.role === ROLES[1]) return true
+    if (role === ROLES[1] && registeredUser.role !== ROLES[1])
+      throw new ForbiddenException('You are not a creator', 'UserNotCreator')
+    return true
   }
 
   private validateToken(token: string): any {
