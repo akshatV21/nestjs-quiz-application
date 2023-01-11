@@ -1,4 +1,4 @@
-import { ROLES } from '../constants'
+import { CATEGORIES, ROLES } from '../constants'
 
 export type HttpSuccessResponse = {
   success: boolean
@@ -13,3 +13,5 @@ export type AuthOptions = {
 }
 
 export type Role = typeof ROLES[number]
+
+export type Category = typeof CATEGORIES[number]
