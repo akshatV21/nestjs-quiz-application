@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
 import { AuthModule } from './auth/auth.module'
 import { MailerModule } from './mailer/mailer.module'
+import { QuizzesModule } from './quizzes/quizzes.module'
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { MailerModule } from './mailer/mailer.module'
     ),
     AuthModule,
     MailerModule,
+    QuizzesModule,
   ],
   controllers: [],
   providers: [],
