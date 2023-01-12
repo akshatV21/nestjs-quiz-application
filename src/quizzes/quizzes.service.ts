@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { Quiz, QuizDocument } from 'src/models/quiz.model'
@@ -14,6 +14,12 @@ export class QuizzesService {
     user.quizzes.push(quiz._id)
 
     await Promise.all([quiz.save(), user.save()])
+    return quiz
+  }
+
+  async getQuizById(id: string) {
+    const quiz = await this.QuizModel.findById(id)
+    if (!quiz) throw new BadRequestException('Invalid quiz id', 'InvalidQuizId')
     return quiz
   }
 }
