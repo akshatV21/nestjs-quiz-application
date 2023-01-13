@@ -4,6 +4,7 @@ import { AuthModule } from './auth/auth.module'
 import { MailerModule } from './mailer/mailer.module'
 import { QuizzesModule } from './quizzes/quizzes.module'
 import { QuestionsModule } from './questions/questions.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { QuestionsModule } from './questions/questions.module';
     MailerModule,
     QuizzesModule,
     QuestionsModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [],

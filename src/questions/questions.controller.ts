@@ -13,7 +13,7 @@ export class QuestionsController implements IQuestionsController {
   @Post()
   @Auth({ role: 'creator' })
   @UsePipes(new ValidationPipe())
-  @UseGuards(new IsUserQuizCreator())
+  @UseGuards(IsUserQuizCreator)
   async httpAddNewQuestion(newQuestionDto: AddQuestionDto): Promise<HttpSuccessResponse> {
     const question = await this.questionsService.addNew(newQuestionDto)
     return { success: true, message: 'New question added', data: { question } }
