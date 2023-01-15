@@ -5,8 +5,10 @@ import { Auth } from 'src/auth/decorators/auth.decorator'
 import { ParseObjectId } from 'src/utils/pipes/objectId.pipe'
 import { HttpSuccessResponse } from 'src/utils/types'
 import { AddQuestionDto } from './dtos/addQuestion.dto'
+import { UpdateOptionsDto } from './dtos/updateOptions.dto'
 import { UpdateQuestionDto } from './dtos/updateQuestion.dto'
 import { AddQuestionGuard } from './guards/addNewQuestion.guard'
+import { UpdateOptionsGuard } from './guards/updatedOptions.guard'
 import { UpdateQuestionGuard } from './guards/updateQuestion.guard'
 import { IQuestionsController } from './questions.interface'
 import { QuestionsService } from './questions.service'
@@ -35,8 +37,23 @@ export class QuestionsController implements IQuestionsController {
   @Auth({ role: 'creator' })
   @UsePipes(new ValidationPipe())
   @UseGuards(UpdateQuestionGuard)
-  async httpUpdateQuestion(@Body() updateQuestionDto: UpdateQuestionDto): Promise<HttpSuccessResponse> {
-    const question = await this.questionsService.updateQuestion(updateQuestionDto)
+  async httpUpdateQuestion(
+    @Body() updateQuestionDto: UpdateQuestionDto,
+    @Req() req: Request,
+  ): Promise<HttpSuccessResponse> {
+    const question = await this.questionsService.updateQuestion(updateQuestionDto, req.question)
     return { success: true, message: 'Question updated successfully', data: { question } }
+  }
+
+  @Patch('options')
+  @Auth({ role: 'creator' })
+  @UsePipes(new ValidationPipe({ transform: true }))
+  @UseGuards(UpdateOptionsGuard)
+  async httpUpdateOptions(
+    @Body() updateOptionsDto: UpdateOptionsDto,
+    @Req() req: Request,
+  ): Promise<HttpSuccessResponse> {
+    const question = await this.questionsService.updateOptions(updateOptionsDto, req.question)
+    return { success: true, message: 'Option updated successfully', data: { question } }
   }
 }
