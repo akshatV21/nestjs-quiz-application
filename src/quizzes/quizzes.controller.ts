@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UsePipes, ValidationPipe } from '@nestjs/common'
+import { Body, Controller, Get, Post, UsePipes, ValidationPipe } from '@nestjs/common'
 import { Auth } from 'src/auth/decorators/auth.decorator'
 import { ReqUser } from 'src/auth/decorators/requser.decorator'
 import { UserDocument } from 'src/models/user.model'
@@ -20,5 +20,12 @@ export class QuizzesController implements IQuizzesController {
   ): Promise<HttpSuccessResponse> {
     const quiz = await this.quizzesService.create(createQuizDto, user)
     return { success: true, message: 'Quiz created successfully', data: { quiz } }
+  }
+
+  @Get()
+  @Auth()
+  async httpGetAllQuizzez(@ReqUser() user: UserDocument): Promise<HttpSuccessResponse> {
+    const quizzes = await this.quizzesService.getAllQuizzes(user._id)
+    return { success: true, message: 'Fetched quizzes successfully', data: { quizzes } }
   }
 }

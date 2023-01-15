@@ -4,4 +4,5 @@ import { CreateQuizDto } from './dtos/createQuiz.dto'
 
 export interface IQuizzesController {
   httpCreateNewQuiz(createQuizDto: CreateQuizDto, user: UserDocument): Promise<HttpSuccessResponse>
+  httpGetAllQuizzez(user: UserDocument): Promise<HttpSuccessResponse>
 }

@@ -17,6 +17,11 @@ export class QuizzesService {
     return quiz
   }
 
+  async getAllQuizzes(userId: string) {
+    const quizzezs = await this.QuizModel.find({ user: userId })
+    return quizzezs
+  }
+
   async getQuizById(id: string) {
     const quiz = await this.QuizModel.findById(id)
     if (!quiz) throw new BadRequestException('Invalid quiz id', 'InvalidQuizId')
