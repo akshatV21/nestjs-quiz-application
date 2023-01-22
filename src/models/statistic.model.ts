@@ -1,6 +1,8 @@
-import { Prop, Schema } from '@nestjs/mongoose'
-import { Types } from 'mongoose'
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
+import { Document, Types } from 'mongoose'
 import { Stat } from 'src/utils/types'
+
+export type StatisticDocument = Statistic & Document
 
 @Schema({ timestamps: true })
 export class Statistic {
@@ -10,3 +12,5 @@ export class Statistic {
   @Prop({ default: [] })
   timeline: Stat[]
 }
+
+export const StatisticSchema = SchemaFactory.createForClass(Statistic)

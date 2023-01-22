@@ -4,6 +4,7 @@ import { Document } from 'mongoose'
 import { ROLES } from 'src/utils/constants'
 import { Role } from 'src/utils/types'
 import { Quiz } from './quiz.model'
+import { SessionDocument } from './session.model'
 
 export type UserDocument = User & Document
 
@@ -26,6 +27,9 @@ export class User {
 
   @Prop({ default: [], ref: 'Quiz' })
   quizzes: Quiz[]
+
+  @Prop({ default: [], ref: 'Session' })
+  sessions: SessionDocument[]
 
   _doc: any
 }
