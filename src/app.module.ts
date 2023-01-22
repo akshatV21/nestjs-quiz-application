@@ -5,6 +5,7 @@ import { MailerModule } from './mailer/mailer.module'
 import { QuizzesModule } from './quizzes/quizzes.module'
 import { QuestionsModule } from './questions/questions.module';
 import { UsersModule } from './users/users.module';
+import { SessionsModule } from './sessions/sessions.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UsersModule } from './users/users.module';
     QuizzesModule,
     QuestionsModule,
     UsersModule,
+    SessionsModule,
   ],
   controllers: [],
   providers: [],
