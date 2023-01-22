@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
+import { WsException } from '@nestjs/websockets'
 import { Model, Types } from 'mongoose'
 import { Session, SessionDocument } from 'src/models/session.model'
 import { Statistic, StatisticDocument } from 'src/models/statistic.model'
@@ -23,6 +24,12 @@ export class SessionsService {
     user.sessions.push(session._id)
 
     await Promise.all([session.save(), statistic.save(), user.save()])
+    return session
+  }
+
+  async getSessionById(id: string) {
+    const session = await this.SessionModel.findById(id)
+    if (!session) throw new WsException({ error: 'InvalidSessionId', message: 'Please provide valid session id' })
     return session
   }
 }
