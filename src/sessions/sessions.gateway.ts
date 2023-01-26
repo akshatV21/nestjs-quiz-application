@@ -4,11 +4,13 @@ import { Auth } from 'src/auth/decorators/auth.decorator'
 import { SESSION_EVENTS } from 'src/utils/constants'
 import { StartSessionDto } from './dtos/startSession.dto'
 import { IsSessionOrganizerGuard } from './guards/isSessionOrganizer.guard'
+import { WsSessionsService } from './services/ws-sessions.service'
 
 @UsePipes(new ValidationPipe())
-@WebSocketGateway({ namespace: 'sessions' })
+@WebSocketGateway()
 export class SessionsGateway {
-  @Auth({ role: 'creator' })
+  constructor(sessionsService: WsSessionsService) {}
+
   @UseGuards(IsSessionOrganizerGuard)
   @SubscribeMessage(SESSION_EVENTS.START_SESSION)
   async handleStartSessionEvent(@MessageBody() startSessionDto: StartSessionDto) {}

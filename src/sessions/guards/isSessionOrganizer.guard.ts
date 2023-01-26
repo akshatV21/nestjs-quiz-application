@@ -1,15 +1,16 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
 import { WsException } from '@nestjs/websockets'
 import { Types } from 'mongoose'
-import { Observable } from 'rxjs'
 import { StartSessionDto } from '../dtos/startSession.dto'
-import { SessionsService } from '../sessions.service'
+import { SessionsService } from '../services/sessions.service'
+import { Socket } from 'socket.io'
 
 @Injectable()
 export class IsSessionOrganizerGuard implements CanActivate {
   constructor(private readonly sessionsService: SessionsService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    const client = context.switchToWs().getClient<Socket>()
     const { session: sessionId, user } = context.switchToWs().getData<StartSessionDto>()
     const session = await this.sessionsService.getSessionById(sessionId)
 

@@ -2,11 +2,14 @@ import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { WsException } from '@nestjs/websockets'
 import { Model, Types } from 'mongoose'
+import { Socket } from 'socket.io'
 import { Session, SessionDocument } from 'src/models/session.model'
 import { Statistic, StatisticDocument } from 'src/models/statistic.model'
 import { UserDocument } from 'src/models/user.model'
+import { SESSION_STATUSES } from 'src/utils/constants'
 import { generate4DigitCode } from 'src/utils/functions'
-import { CreateSessionDto } from './dtos/createSession.dto'
+import { CreateSessionDto } from '../dtos/createSession.dto'
+import { StartSessionDto } from '../dtos/startSession.dto'
 
 @Injectable()
 export class SessionsService {

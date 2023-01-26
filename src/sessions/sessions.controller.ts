@@ -5,7 +5,7 @@ import { UserDocument } from 'src/models/user.model'
 import { HttpSuccessResponse } from 'src/utils/types'
 import { CreateSessionDto } from './dtos/createSession.dto'
 import { ISessionsController } from './sessions.interface'
-import { SessionsService } from './sessions.service'
+import { SessionsService } from './services/sessions.service'
 
 @Controller('sessions')
 export class SessionsController implements ISessionsController {
