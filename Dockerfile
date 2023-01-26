@@ -1,30 +1,49 @@
-FROM node:12.19.0-alpine3.9 AS development
+# Building layer
+FROM node:16-alpine as development
 
-WORKDIR /usr/src/app
+# Optional NPM automation (auth) token build argument
+# ARG NPM_TOKEN
 
+# Optionally authenticate NPM registry
+# RUN npm set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+
+WORKDIR /app
+
+# Copy configuration files
+COPY tsconfig*.json ./
 COPY package*.json ./
 
-RUN npm install glob rimraf
+# Install dependencies from package-lock.json, see https://docs.npmjs.com/cli/v7/commands/npm-ci
+RUN npm ci
 
-RUN npm install --only=development
+# Copy application sources (.ts, .tsx, js)
+COPY src/ src/
 
-COPY . .
-
+# Build application (produces dist/ folder)
 RUN npm run build
 
-FROM node:12.19.0-alpine3.9 as production
+# Runtime (production) layer
+FROM node:16-alpine as production
 
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
+# Optional NPM automation (auth) token build argument
+# ARG NPM_TOKEN
 
-WORKDIR /usr/src/app
+# Optionally authenticate NPM registry
+# RUN npm set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
 
+WORKDIR /app
+
+# Copy dependencies files
 COPY package*.json ./
 
-RUN npm install --only=production
+# Install runtime dependecies (without dev/test dependecies)
+RUN npm ci --omit=dev
 
-COPY . .
+# Copy production build
+COPY --from=development /app/dist/ ./dist/
 
-COPY --from=development /usr/src/app/dist ./dist
+# Expose application port
+EXPOSE 8080
 
-CMD ["node", "dist/main"]
+# Start application
+CMD [ "node", "dist/main.js" ]
