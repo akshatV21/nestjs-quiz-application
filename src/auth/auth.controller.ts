@@ -29,7 +29,7 @@ export class AuthController implements IAuthController {
   @Get('validateEmail')
   @Auth({ isOpen: true })
   async httpValidateEmail(@Query('token') token: string): Promise<HttpSuccessResponse> {
-    const result = await this.authService.validateEmail(token)
+    await this.authService.validateEmail(token)
     return { success: true, message: 'Email validation successfully' }
   }
 }
