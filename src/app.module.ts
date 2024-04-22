@@ -9,9 +9,7 @@ import { SessionsModule } from './sessions/sessions.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://akshat21:aku1985pika@cluster0.ew0oz.mongodb.net/quiz_app?retryWrites=true&w=majority',
-    ),
+    MongooseModule.forRoot(process.env.DB_URL),
     AuthModule,
     MailerModule,
     QuizzesModule,
