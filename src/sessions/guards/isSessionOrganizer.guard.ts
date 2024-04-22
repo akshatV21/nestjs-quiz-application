@@ -10,7 +10,7 @@ export class IsSessionOrganizerGuard implements CanActivate {
   constructor(private readonly sessionsService: SessionsService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const client = context.switchToWs().getClient<Socket>()
+    context.switchToWs().getClient<Socket>()
     const { session: sessionId, user } = context.switchToWs().getData<StartSessionDto>()
     const session = await this.sessionsService.getSessionById(sessionId)
 
